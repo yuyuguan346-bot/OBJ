@@ -8,12 +8,17 @@ const cors = require("cors");
 
 // ============== 基础配置 ==============
 const app = express();
-const PORT = 3000;
-const HOST = "http://192.168.100.95"; // 部署后改成你的域名或服务器IP
+
+// const PORT = 3000;
+// const HOST = "http://192.168.100.95"; // 部署后改成你的域名或服务器IP
+const HOST = process.env.HOST || "https://www.usdown.net"; 
+const PORT = process.env.PORT || 48148;
+
 const uploadDir = path.join(__dirname, "uploads");
 
 // CORS：前后端分离时必须
-app.use(cors({ origin: true })); // 也可指定成你的前端域名
+// app.use(cors({ origin: true })); // 也可指定成你的前端域名
+app.use(cors({ origin: "https://wwww.usdown.net" }));
 
 // 确保 uploads 目录存在
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });

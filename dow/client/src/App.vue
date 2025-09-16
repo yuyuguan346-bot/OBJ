@@ -5,7 +5,7 @@
     <form class="card" @submit.prevent="upload">
       <input type="file" accept=".apk" @change="onPick" />
       <button :disabled="!file || loading" type="submit">
-        {{ loading ? '上传中…' : '上传' }}
+        {{ loading ? "上传中…" : "上传" }}
       </button>
     </form>
 
@@ -34,8 +34,8 @@
 
 <script setup>
 import { ref } from "vue";
-import { SERVER_ORIGIN } from "./api";
-
+// import { SERVER_ORIGIN } from "./api";
+import { API_BASE } from "./api";
 const file = ref(null);
 const loading = ref(false);
 const result = ref({ fileUrl: "", qrCodeDataUrl: "" });
@@ -51,16 +51,16 @@ async function upload() {
 
   loading.value = true;
   try {
-    const resp = await fetch(`${SERVER_ORIGIN}/upload`, {
+    const resp = await fetch(`${API_BASE}/upload`, {
       method: "POST",
-      body: form
+      body: form,
     });
     const data = await resp.json();
     if (!data.ok) throw new Error(data.message || "上传失败");
 
     result.value = {
       fileUrl: data.fileUrl,
-      qrCodeDataUrl: data.qrCodeDataUrl
+      qrCodeDataUrl: data.qrCodeDataUrl,
     };
   } catch (e) {
     alert(e.message || "上传失败");
@@ -85,21 +85,55 @@ function openDirect() {
 </script>
 
 <style>
-* { box-sizing: border-box; }
-body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
-.wrap { max-width: 720px; margin: 40px auto; padding: 0 16px; }
-h1 { font-size: 22px; margin-bottom: 16px; }
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+.wrap {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+h1 {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
 .card {
-  border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px;
-  box-shadow: 0 4px 16px rgba(0,0,0,.04); margin-bottom: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  margin-bottom: 20px;
 }
 button {
-  padding: 8px 14px; border-radius: 10px; border: 1px solid #e5e7eb;
-  cursor: pointer; background: #fff;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  background: #fff;
 }
-button:disabled { opacity: .6; cursor: not-allowed; }
-.qr { margin-top: 12px; }
-.qr img { width: 220px; height: 220px; object-fit: contain; }
-.btns { display: flex; gap: 10px; margin-top: 12px; }
-.tip { color: #6b7280; font-size: 12px; margin-top: 8px; }
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.qr {
+  margin-top: 12px;
+}
+.qr img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+}
+.btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+.tip {
+  color: #6b7280;
+  font-size: 12px;
+  margin-top: 8px;
+}
 </style>
